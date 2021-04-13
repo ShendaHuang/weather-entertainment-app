@@ -1,0 +1,64 @@
+{
+ Weather: [
+      "warm sun",
+	  "hot sun", 
+	  "blazing sun", 
+	  "sunshine", 
+	  "sunlight", 
+	  "sunrays", 
+	  "sunbeams", 
+	  "bright sunshine", 
+	  "bright sunlight", 
+	  "a patch of sunlight", 
+	  "daylight", 
+	  "breeze",
+	  "a gust of wind",
+	  "high wind", 
+	  "light wind",
+	  "heavy rain", 
+	  "pouring rain", 
+	  "steady rain", 
+	  "constant rain", 
+	  "cold rain" ,
+	  "light rain", 
+	  "fog", 
+	  "haze", 
+	  "mist", 
+	  "smog", 
+	  "foggy", 
+	  "hazy", 
+	  "misty", 
+	  "smoggy", 
+	  "dew", 
+	  "dewy",
+	  "heavy fog", 
+	  "patchy fog",
+	  "thunder", 
+	  "thunderstorm", 
+	  "thundercloud", 
+	  "distant thunder",
+	  "faint thunder", 
+	  "loud thunder",
+	  "snow", 
+	  "snowfall", 
+	  "snowstorm", 
+	  "blizzard", 
+	  "frost", 
+	  "thaw",
+    ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
