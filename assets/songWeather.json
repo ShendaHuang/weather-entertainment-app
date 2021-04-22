@@ -24,7 +24,7 @@
         "It’s a Beautiful Morning, By The Rascals",
         "I Wanna Dance with Somebody (Who Loves Me), By Whitney Houston",
         "Good Vibrations, By The Beach Boys",
-        "Don’t Worry, Be Happy, By Bobby McFerrin",
+        "Don’t Worry, Be Happy, By Bobby McFerrin"
     ],
     cloudy: [
         "Put Your Records On, By Corinne Bailey Rae",
@@ -49,7 +49,7 @@
         "Crash My Car, By COIN",
         "Tiny Dancer, By Elton John",
         "ILYSB, By LANY",
-        "Something Like Olivia, By John Mayer",
+        "Something Like Olivia, By John Mayer"
     ],
     rainy: [
         "Someone Like You, By Adele",
@@ -75,6 +75,6 @@
         "The Scientist, By Coldplay",
         "Sunburn, By Ed Sheeran",
         "River, By Leon Bridges",
-        "The Night We Met, By Lord Huron",
+        "The Night We Met, By Lord Huron"
     ]
 }
