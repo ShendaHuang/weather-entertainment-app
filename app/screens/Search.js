@@ -16,12 +16,12 @@ export class Search extends Component {
 	
 	handleNameChange = text => {this.setState({ name: text });}
 
-	storeData = async(data) => {
-	   try{
-		   await AsyncStorage.setItem('@stored_name',data)
-	   } catch(e){
-		   alert('Failed to save the name')
-	   }
+	storeData = async(data) =>{
+        try{
+            await AsyncStorage.setItem('@stored_name',data)
+        } catch(e){
+            alert('Failed to save the name')
+        }
 	}
 	
 	getData = async() =>{
@@ -46,19 +46,19 @@ export class Search extends Component {
 		this.setState({stored_name:this.state.search_1})
 		console.log(this.state.search_1)
         await this.storeData(this.state.search_1);
-		//await this.props.parentCallback(this.state.search_1)
+		this.props.weatherSetter(this.state.stored_name)
 	}
 	
 	SecondModel = async() =>{
 		this.setState({stored_name:this.state.search_2})
         await this.storeData(this.state.search_2);
-		//await this.props.parentCallback(this.state.search_2)
+		this.props.weatherSetter(this.state.stored_name)
 	}
 	
 	ThirdModel = async() =>{
 		this.setState({stored_name:this.state.search_3})
         await this.storeData(this.state.search_3);
-		//await this.props.parentCallback(this.state.search_3)
+		this.props.weatherSetter(this.state.stored_name)
 	}
 	
 	componentDidMount = async() =>{
@@ -75,20 +75,20 @@ export class Search extends Component {
 		
 		await this.SetModels(weather_1, weather_2, weather_3);
 		await this.getData();
-		// await this.props.parentCallback(this.state.stored_name)
+		this.props.weatherSetter(this.state.stored_name)
 	}
 
 	activate = async() =>{
 		await this.storeData(this.state.name);
 		await this.getData();
-		// await this.props.parentCallback(this.state.stored_name)
+		this.props.weatherSetter(this.state.stored_name)
 	}
 	
 	search_history = async() =>{
-		// await this.props.parentCallback(this.state.stored_name)
+		this.props.weatherSetter(this.state.stored_name)
 	}
 
-    updateState = (prevState, newState = {}) => {
+    updateState = (prevState, newState = {}) =>{
         this.setState({...prevState, ...newState});
     };
 

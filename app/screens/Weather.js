@@ -6,37 +6,42 @@ export class Weather extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            town: null,
+            town: "Unknown Town",
+            weather: "Unknown Weather",
+            temp: "???",
+            temp_max: "??",
+            temp_min: "??",
             lat: null,
             lon: null,
         };
     }
 
     componentDidMount = async() =>{
-		this.getLocation();
+        // TODO: Remember to uncomment this part to launch!
+	// 	this.getLocation();
 	}
 
-	storeData = async(data) => {
-        try{
-            await AsyncStorage.setItem('@stored_name',data)
-        } catch(e){
-            alert('Failed to save the name')
-        }
-    }
+	// storeData = async(data) => {
+    //     try{
+    //         await AsyncStorage.setItem('@stored_name',data)
+    //     } catch(e){
+    //         alert('Failed to save the name')
+    //     }
+    // }
     
-    getData = async() =>{
-        try{
-            const stored_name = await AsyncStorage.getItem('@stored_name');
-            this.setState({stored_name:stored_name})
-        }
-        catch(e){alert('Failed to get the name')}
-    }
+    // getData = async() =>{
+    //     try{
+    //         const stored_name = await AsyncStorage.getItem('@stored_name');
+    //         this.setState({stored_name:stored_name})
+    //     }
+    //     catch(e){alert('Failed to get the name')}
+    // }
     
-    clearData = async() =>{
-        await AsyncStorage.clear();
-    }
+    // clearData = async() =>{
+    //     await AsyncStorage.clear();
+    // }
 
-    getLocation() {
+    getLocation = () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
@@ -44,17 +49,15 @@ export class Weather extends Component {
                     lon: position.coords.longitude,
                     error: null,
                 });
+                this.getWeather(position.coords.latitude, position.coords.longitude);
             },
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: false, timeout: 5000, maximumAge: Infinity},
         );
-        if (this.state.lat!=null && this.state.lon!=null) {
-            this.getWeather(this.state.lat, this.state.lon);
-        }
     }
 
     getWeather = (lat, lon) => {
-        var apiKey = '3ff190e2984594ee2f1ef45fdd4108a5'
+        var apiKey = 'aaea1de97ee8f87cc3aab5301d589ca2'
        
         var fetchURL = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat.toString() + '&lon=' + lon.toString() + '&appid=' + apiKey + '&units=imperial'
         
@@ -91,8 +94,8 @@ export class Weather extends Component {
 
                 <Image source={pic} style={{width: 200, height:180}}/>
             
-                <TouchableOpacity style={styles.buttonContainer} onPress={()=>this.getLocation()}>
-                    <Text style={styles.bText}>Get Weather</Text>
+                <TouchableOpacity style={styles.buttonContainer} onPress={()=>this.props.weatherSetter(this.state.weather)}>
+                    <Text style={styles.bText}>Use Weather for Search</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -119,9 +122,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         margin: 10,
         borderRadius: 10,
-        width: 180,
-        height: 30,
+        width: 230,
+        height: 45,
         alignItems: 'center',
+        justifyContent: 'center',
     },
     weatherText: {
         color: 'white',
