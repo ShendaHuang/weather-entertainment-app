@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Dimensions } from 'react-native';
+=======
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Dimensions, Alert } from 'react-native';
+import { Audio } from 'expo-av';
+import {FontAwesome5, AntDesign} from '@expo/vector-icons';
+>>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
 
 const { height } = Dimensions.get('window');
 
@@ -12,16 +18,58 @@ export class Music extends Component {
             screenHeight: 0,
         }
     }
+<<<<<<< HEAD
+=======
+	
+  Sound = async() => {
+    console.log('Loading Sound')
+	
+	this.sound = new Audio.Sound();
+	
+    this.sound.loadAsync(
+       require('../../assets/bumblebee-sound.mp3')
+    );
+ 
+	let { positionMillis } = await this.sound.getStatusAsync()
+	}
+	
+  playSound = async() => {
+	console.log('Playing Sound');
+	let { positionMillis } = await this.sound.getStatusAsync()
+	if(positionMillis == 0) { await this.sound.playAsync();}
+    else {await this.sound.playFromPositionAsync(positionMillis)}
+	}
+	
+
+  pauseSound = async() => {
+	  
+    await this.sound.pauseAsync(); 
+	let { isLoaded, isPlaying, positionMillis } = await this.sound.getStatusAsync()
+	console.log(positionMillis)
+	await this.sound.setStatusAsync({positionMillis:positionMillis})
+  }
+>>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
 
     onContentSizeChange = (contentWidth, contentHeight) =>{
         this.setState({screenHeight: contentHeight});
     }
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
     getMusicList = (weather) =>{
         const music_lists = require("../../assets/songWeather.json");
         // this.setState({music_list: music_lists["Sunny"]})
         this.setState({music_list: music_lists[weather]})
     }
+<<<<<<< HEAD
+=======
+	
+	_onPressButton() {
+	Alert.alert('Name Saved!')
+	}
+>>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
     
     render() {
         
@@ -29,12 +77,27 @@ export class Music extends Component {
         for(var i in this.state.music_list){
             var text = (
             <View key={i} style={styles.list_item}>
+<<<<<<< HEAD
                 <Text
                     // onPress={this.show.bind(this, this.props.music_list_display[i])}
                     numberOfLines={1}
                     style={styles.list_item_font}>
                     {this.state.music_list[i]}
                 </Text>
+=======
+				<TouchableOpacity style={styles.text_icon}
+					onPress={() => {this.Sound()}}>
+                <Text margin = {200}
+                    // onPress={this.show.bind(this, this.props.music_list_display[i])}
+                    numberOfLines={1}>
+                    {this.state.music_list[i]}
+                </Text>
+				</TouchableOpacity>
+				<FontAwesome5 
+					onPress={() => {this.playSound()}} name ="play" size={22} />
+				<AntDesign
+					onPress={() => {this.pauseSound()}} name ="pause" size={22} />
+>>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
             </View>
             );
             music_list_display.push(text);
@@ -99,10 +162,32 @@ const styles = StyleSheet.create({
         marginRight:5,
         padding:5,
         borderWidth:1,
+<<<<<<< HEAD
         height:30,
         borderRadius:3,
         borderColor:'#ddd'
     },
+=======
+        height:40,
+		flex:1,
+		flexDirection:'row',
+        borderRadius:3,
+        borderColor:'#ddd'
+    },
+	text_icon:{
+		marginLeft:5,
+        marginRight:5,
+        padding:5,
+        //borderWidth:1,
+        height: 30,
+		width:100,
+		flex:1,
+		justifyContent:'flex-start',
+		flexDirection:'row',
+        borderRadius:3,
+        borderColor:'#ddd'
+	},
+>>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
 });
 
 export default Music;
