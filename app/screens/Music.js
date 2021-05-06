@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
-import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Dimensions } from 'react-native';
-=======
-import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Dimensions, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Dimensions, Alert, Button } from 'react-native';
 import { Audio } from 'expo-av';
 import {FontAwesome5, AntDesign} from '@expo/vector-icons';
->>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
 
 const { height } = Dimensions.get('window');
 
@@ -16,92 +12,133 @@ export class Music extends Component {
             search_weather: '',
             music_list: '',
             screenHeight: 0,
+			url: null,
+			sound: null,
+			song_name:'',
+			song_names:[],
+			isPlay: null,
+			genre_id: '',
+			song_dict:[],
         }
     }
-<<<<<<< HEAD
-=======
-	
-  Sound = async() => {
-    console.log('Loading Sound')
-	
-	this.sound = new Audio.Sound();
-	
-    this.sound.loadAsync(
-       require('../../assets/bumblebee-sound.mp3')
-    );
- 
-	let { positionMillis } = await this.sound.getStatusAsync()
-	}
-	
-  playSound = async() => {
-	console.log('Playing Sound');
-	let { positionMillis } = await this.sound.getStatusAsync()
-	if(positionMillis == 0) { await this.sound.playAsync();}
-    else {await this.sound.playFromPositionAsync(positionMillis)}
-	}
-	
-
-  pauseSound = async() => {
-	  
-    await this.sound.pauseAsync(); 
-	let { isLoaded, isPlaying, positionMillis } = await this.sound.getStatusAsync()
-	console.log(positionMillis)
-	await this.sound.setStatusAsync({positionMillis:positionMillis})
-  }
->>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
 
     onContentSizeChange = (contentWidth, contentHeight) =>{
         this.setState({screenHeight: contentHeight});
     }
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
     getMusicList = (weather) =>{
         const music_lists = require("../../assets/songWeather.json");
-        // this.setState({music_list: music_lists["Sunny"]})
         this.setState({music_list: music_lists[weather]})
     }
-<<<<<<< HEAD
-=======
 	
 	_onPressButton() {
-	Alert.alert('Name Saved!')
+	    Alert.alert('Name Saved!')
 	}
->>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
-    
-    render() {
+	
+	componentDidMount() {
+		this.fetchData(this.props.searchTerm);
+	}
+	
+    fetchData = async(weather) => {
+		const apikey = '?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4';
+		const web = 'http://api.napster.com/v2.2/';
+		
+		const music_lists = await require("../../assets/songWeather.json");
+		if(music_lists.hasOwnProperty(weather)){
+			this.setState({music_list: music_lists[weather]})
+		}
+		else {
+			this.setState({music_list: music_lists['other']})
+			Alert.alert('weather is not in record')
+		}
+		
+		const request_string_1 = web + 'genres/' + this.state.music_list[0] + apikey;
+		await fetch(request_string_1)
+        .then(res => res.json())
+        .then(json => {
+            this.setState({
+                genre_id: json.genres[0].links.childGenres.ids[1]
+            });
+        });
+		
+		var track_list = [];
+		await fetch(web + 'genres/' + this.state.genre_id + '/tracks/top' + apikey)
+		.then(res => res.json())
+        .then(json => {
+			for(var i = 0; i < json.tracks.length; i++){
+				track_list.push(json.tracks[i].id)
+			}
+        });
+		
+		var url_track = [];
+		var song_names = [];
+		var is_play = [];
+		for(var i = 0; i < track_list.length; i++){
+			await fetch(web + 'tracks/' + track_list[i] + apikey)
+			.then(res => res.json())
+			.then(json => {
+				url_track.push(json.tracks[0].previewURL)
+				song_names.push(json.tracks[0].name)
+				is_play.push(false)
+        });
+		}
+		
+		var dict = [];
+		
+		for(var i = 0; i < song_names.length; i++){
+			dict.push({
+				key: i,
+				song_name: song_names[i]
+			});
+		}
+		
+    	await this.setState({url: url_track, song_names: song_names, isPlay: is_play, song_dict: dict});
+		
+		this.getMusicList(this.props.searchTerm)
+    }
+	
+    playSound = async(item) => {
+		var song_link = this.state.url[item.key]
+		var song_name = item.song_name
+		var num = item.key
         
-        var music_list_display = [];
-        for(var i in this.state.music_list){
-            var text = (
-            <View key={i} style={styles.list_item}>
-<<<<<<< HEAD
-                <Text
-                    // onPress={this.show.bind(this, this.props.music_list_display[i])}
-                    numberOfLines={1}
-                    style={styles.list_item_font}>
-                    {this.state.music_list[i]}
-                </Text>
-=======
-				<TouchableOpacity style={styles.text_icon}
-					onPress={() => {this.Sound()}}>
-                <Text margin = {200}
-                    // onPress={this.show.bind(this, this.props.music_list_display[i])}
-                    numberOfLines={1}>
-                    {this.state.music_list[i]}
-                </Text>
-				</TouchableOpacity>
-				<FontAwesome5 
-					onPress={() => {this.playSound()}} name ="play" size={22} />
-				<AntDesign
-					onPress={() => {this.pauseSound()}} name ="pause" size={22} />
->>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
-            </View>
-            );
-            music_list_display.push(text);
+        if(song_name != this.state.song_name) {
+                console.log('Loading Sound')
+	
+                const source = {
+                    uri: song_link
+                }
+				
+                const { sound } = await Audio.Sound.createAsync(
+                    { uri: song_link },
+                    { shouldPlay: false }
+                );
+        
+                let { positionMillis } = await sound.getStatusAsync()
+                this.setState({sound: sound})
+                this.setState({song_name: song_name})
+        }	
+        
+        let { positionMillis } = await this.state.sound.getStatusAsync()
+        
+		var isPlay = this.state.isPlay
+		
+        if(isPlay[num] == false) {
+			isPlay[num] = true
+            this.setState({isPlay: isPlay})
+            if(positionMillis == 0) { await this.state.sound.playAsync();}
+            else {await this.state.sound.playFromPositionAsync(positionMillis)}
         }
+        else {
+			isPlay[num] = false
+            this.setState({isPlay: isPlay})
+            await this.state.sound.pauseAsync(); 
+            await this.state.sound.setStatusAsync({positionMillis:positionMillis})
+        }
+    }
+	
+    render() {		
+		
 
         const scrollEnabled = this.state.screenHeight > height;
         return (
@@ -112,15 +149,21 @@ export class Music extends Component {
                     scrollEnabled={scrollEnabled}
                     onContentSizeChange={this.onContentSizeChange}
                 >
-                    <Text>Music Screen for weather: {this.props.searchTerm}</Text>
-
-                    <TouchableOpacity style={styles.searchMusicButton}
-                        onPress={() => {this.getMusicList(this.props.searchTerm)}}> 
-                        <Text style={styles.searchButtonText}>Search Music</Text>
-                    </TouchableOpacity>
-
-                    { music_list_display }
-
+                    <Text style={styles.text_music_screen}>Music Screen for weather: {this.props.valueTerm}</Text>
+					{
+						this.state.song_dict.map((item, index) => (
+						  <View key = {item.key} style={styles.list_item}>
+							<Text style={styles.text_icon} margin = {200}>
+								{item.song_name}
+							</Text>
+							{this.state.isPlay[item.key] ? 
+								<AntDesign key={item.key+100} onPress={() => {this.playSound(item)}} name ="pause" size={22} /> : 
+								<FontAwesome5 key={item.key+100} onPress={() => {this.playSound(item)}} name ="play" size={22} /> 
+							}
+							
+						  </View>
+						))
+					}
                 </ScrollView>
             </SafeAreaView>
         );
@@ -130,16 +173,14 @@ export class Music extends Component {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        paddingTop:60,
+        paddingTop:10,
         backgroundColor: '#b3dbff',
     },
     scrollview:{
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop:60,
+        paddingTop:40,
         backgroundColor: '#b3dbff',
     },
     searchMusicButton:{
@@ -162,12 +203,6 @@ const styles = StyleSheet.create({
         marginRight:5,
         padding:5,
         borderWidth:1,
-<<<<<<< HEAD
-        height:30,
-        borderRadius:3,
-        borderColor:'#ddd'
-    },
-=======
         height:40,
 		flex:1,
 		flexDirection:'row',
@@ -178,7 +213,6 @@ const styles = StyleSheet.create({
 		marginLeft:5,
         marginRight:5,
         padding:5,
-        //borderWidth:1,
         height: 30,
 		width:100,
 		flex:1,
@@ -187,7 +221,12 @@ const styles = StyleSheet.create({
         borderRadius:3,
         borderColor:'#ddd'
 	},
->>>>>>> d202bbfd1e28ce512a2b4d06ac1f3c33f7305b65
+	text_music_screen:{
+		marginBottom: 40,
+		fontSize: 20,
+		color: '#483d8b',
+	},
 });
+
 
 export default Music;

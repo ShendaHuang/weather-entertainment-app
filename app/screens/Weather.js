@@ -17,30 +17,8 @@ export class Weather extends Component {
     }
 
     componentDidMount = async() =>{
-        // TODO: Remember to uncomment this part to launch!
-	// 	this.getLocation();
+	 	this.getLocation();
 	}
-
-	// storeData = async(data) => {
-    //     try{
-    //         await AsyncStorage.setItem('@stored_name',data)
-    //     } catch(e){
-    //         alert('Failed to save the name')
-    //     }
-    // }
-    
-    // getData = async() =>{
-    //     try{
-    //         const stored_name = await AsyncStorage.getItem('@stored_name');
-    //         this.setState({stored_name:stored_name})
-    //     }
-    //     catch(e){alert('Failed to get the name')}
-    // }
-    
-    // clearData = async() =>{
-    //     await AsyncStorage.clear();
-    // }
-
     getLocation = () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -61,7 +39,6 @@ export class Weather extends Component {
        
         var fetchURL = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat.toString() + '&lon=' + lon.toString() + '&appid=' + apiKey + '&units=imperial'
         
-        // this.setState({fURL: fetchURL})
         fetch(fetchURL)
         .then(res => res.json())
         .then(json => {

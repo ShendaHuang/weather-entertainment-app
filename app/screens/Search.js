@@ -44,7 +44,6 @@ export class Search extends Component {
 
 	FirstModel = async() =>{
 		this.setState({stored_name:this.state.search_1})
-		console.log(this.state.search_1)
         await this.storeData(this.state.search_1);
 		this.props.weatherSetter(this.state.stored_name)
 	}
@@ -144,10 +143,9 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor:'white',
-        //alignItems:'center',
-        //justifyContent:'center',
         paddingTop:40,
         backgroundColor: '#b3dbff',
+		paddingTop:60
     },
     textInput:{
         borderColor: 'black',
@@ -173,7 +171,8 @@ const styles = StyleSheet.create({
         width:400,
         padding: 15,
         margin: 5,
-        marginBottom: 50
+        marginBottom: 50,
+		marginTop: 10,
     },
     historyButton:{
         borderWidth: 1,
@@ -193,7 +192,7 @@ const styles = StyleSheet.create({
         width:200,
         padding: 15,
         margin: 5,
-        marginBottom: 30
+        marginBottom: 30,
     },
 });
 

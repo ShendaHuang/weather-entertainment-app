@@ -15,6 +15,8 @@ export default class AppNavigator extends Component {
             Name:'',
             stored_name:'',
             weather_value:'',
+			weather_list: ["thunderstorm", "drizzle", "rain", "snow", "clouds", "clear sky", "sunny", "cloudy", "rainy", "mist", "smoke", "haze", "fog", "sand", "dust", "tornado"],
+			weather_search:'',
         }
     }
       
@@ -23,7 +25,16 @@ export default class AppNavigator extends Component {
     }
 
     SetWeather = (weather_condition) => {
-        this.setState({weather_value:weather_condition})
+		this.setState({weather_value:weather_condition})
+		weather_condition = weather_condition.toLowerCase();
+		for(var i in this.state.weather_list){
+			var cur_weather = this.state.weather_list[i];
+			if( weather_condition.includes(cur_weather)){
+				weather_condition = cur_weather.trim();
+				break;
+			}
+		}
+        this.setState({weather_search:weather_condition})
     }
   
     render() {
@@ -34,7 +45,8 @@ export default class AppNavigator extends Component {
                         <MaterialCommunityIcons name="weather-partly-cloudy" size={size} color={color} />
                     ),
                 }} />
-                <Tab.Screen name='Music' children={() =><Music searchTerm={this.state.weather_value}/>} options={{
+                <Tab.Screen name='Music' children={() =><Music valueTerm={this.state.weather_value} searchTerm={this.state.weather_search}/>} options={{
+                    unmountOnBlur: true,
                     tabBarIcon: ({color, size}) => (
                         <MaterialIcons name="library-music" size={size} color={color} />
                     ),
